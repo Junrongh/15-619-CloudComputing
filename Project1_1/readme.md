@@ -1,4 +1,4 @@
-##		Project 1 Big Data Analytics
+#		Project 1 Big Data Analytics
 
 ###		EC2 info
 
