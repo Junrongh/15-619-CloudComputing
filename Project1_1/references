@@ -1,0 +1,21 @@
+{
+	"referenceGuide": "Cite all the reference sources in the required format. Proper citations will help you avoid unnecessary trouble but does not make it acceptable to copy code. Read the course and university policy statements in this regard. When working with others, limit the discussion to block diagrams and arrows. Do not look at another students' code. Read the JSON semantics and make use of JSON validator from the Internet if needed.",
+	"websites": [{
+			"title": "<how to sort Map values by key in Java>",
+			"url": "<https://stackoverflow.com/questions/922528/how-to-sort-map-values-by-key-in java>",
+			"code": "<>",
+			"description": "<additional information you may find necessary to provide>"
+		},
+		{
+			"title": "<sorting-a-hashmap-based-on-value-then-key>",
+			"url": "<https://stackoverflow.com/questions/3074154/sorting-a-hashmap-based-on-value-then-key>",
+			"code": "<public int compare(Entry<String, Integer> o1,Entry<String, Integer> o2) {int compare1 = o2.getValue().compareTo(o1.getValue());if (compare1 != 0) {return compare1;}else{return o1.getKey().compareTo(o2.getKey());}} > ",
+			"description": "<>"
+		}
+	],
+	"collaborators": [{
+		"andrewId": "<yuans2>",
+		"collaborationType": "<we helped each other>",
+		"description": "<using a list to sort the map by value than by key>"
+	}]
+}
