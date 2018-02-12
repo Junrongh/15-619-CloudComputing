@@ -21,8 +21,403 @@ Login & Copy:
 	$ scp -i 15619Project1.pem -r Project1 ubuntu@54.167.36.132:
 
 
-<div class="panel panel-default writeup_section" data-sequence="5">
+<h1 class="page-header">Sequential analysis
+    <small>
+        Analyze an hour of Wikipedia data
+    </small>
+</h1>
+
+<div class="panel-body writeuppanel">
+    
+    <h2>Introduction</h2>
+
+<p><div class="panel panel-info"> <div class="panel-heading">Information</div> <div class="panel-body"> </p>
+
+<h4>Learning Objectives</h4>
+
+<ol>
+<li><p>Process a portion of a large dataset of text using sequential programs on cloud resources.</p></li>
+<li><p>Identify the potential limitations of using sequential programs to analyze large volumes of data.</p></li>
+<li><p>Adopt Python Data Analysis Library (<em>pandas</em>) to solve data science problems progressively with interactive programming using Jupyter Notebook</p></li>
+<li><p>Explore the structure, usage, and limitations of common data formats such as JSON, CSV, and TSV.</p></li>
+<li><p>Explore the characteristics of a real-world dataset and recognize arbitrary or corrupted records.</p></li>
+<li><p>Develop robust code that correctly executes in multiple environments, whether on your local computer or a remote virtual machine.</p></li>
+</ol>
+
+<p></div></div></p>
+
+<p><div class="panel panel-danger"> <div class="panel-heading">Danger</div> <div class="panel-body"> </p>
+
+<h4>Accessing 15-319/15-619 Resources</h4>
+
+<p>In this module of Project 1, we require you to SSH into Ubuntu VMs running on the AWS cloud.</p>
+
+<p>Your login will be blocked if any of the following cases occur:</p>
+
+<ol>
+<li><p>You did not update your AWS email address in your <a href="https://theproject.zone/profile/">profile</a> of theproject.zone.</p></li>
+<li><p>You did not update your 12-digit AWS account ID in your <a href="https://theproject.zone/profile/">profile</a> of theproject.zone.</p></li>
+<li><p>You did not click on "Accept" in the consolidated billing request from AWS sent the email you set in Step 1.</p></li>
+<li><p>You modified your existing linked account number or AWS email ID in your profile on theproject.zone.</p></li>
+<li><p>Your linked AWS account got unlinked from us for any reason (check <a href="https://console.aws.amazon.com/organizations/home?region=us-east-1#/organization/overview">here</a> to confirm that Organization ID <code>o-6d1jdp4fj0</code> appears under "Your account belongs to the following organization").</p></li>
+<li><p>In this week, you can only launch a <code>t2.micro</code> instance.</p></li>
+</ol>
+
+<p>The course billing account is a limited and precious resource shared by ALL students. The budget and tagging requirements are strictly enforced and are meant to simulate a real-world environment. You cannot use personal AWS resources for the course. When detected, severe penalties will ensue.</p>
+
+<p></div></div></p>
+
+<p><div class="panel panel-info"> <div class="panel-heading">Information</div> <div class="panel-body"> 
+You have the opportunity to influence the cloud service provider offerings. Complete the <a href="https://docs.google.com/forms/d/1ZumBj-31NNjoqLn7UIbxt0Nj5aC3vlcrQ_SfP2lIfas/edit">Cloud Engineer Feedback</a> at any time during the project and as many times as you need.
+</div></div></p>
+
+<h2>Introduction to Data Analytics using A Wikipedia Dataset</h2>
+
+<p>Wikipedia is often a great reflector of current events. Pages that are being accessed with increasing frequency often indicate an event related to the topic of the page. Births, deaths, Google Doodles, wardrobe malfunctions, or even something mundane as a technical conference can often trigger a spurt of interest in a topic.</p>
+
+<p>Wikipedia serves as a fairly unbiased source of reporting of the news, and sometimes even reveals hidden patterns. Over the next two weeks, we will see if we can find what the data tells us.</p>
+
+<p>This week we will start to analyze data with a single instance running small scripts on an hour's worth of Wikipedia traffic log. We will focus exclusively on English Wikipedia and ignore the rest of the Wikimedia project, to cater to the interest of students.</p>
+
+<p>To be able to do this, we will write a basic filter this week, test it on one sample hour of the logs and then use it for the remaining 719 hours of the month next week. This form of sanity testing your code on a subset of the data will be useful in all your future data wrangling tasks.</p>
+
+<p><div class="panel panel-danger"> <div class="panel-heading">Danger</div> <div class="panel-body"> </p>
+
+<h4>Warnings</h4>
+
+<p>Working on the cloud may be a new experience for you. Please go through the necessary primers and set up your workstation to support easy and secure access to your cloud resources. Make sure the AMI we provide can run your code.</p>
+
+<p>We will explore the usage of tools and libraries to solve common tasks efficiently. Therefore, we support Maven and <code>pip</code> for you to manage Java or Python 2/3 packages and dependencies using industry standards. We have also installed the GNU tools you may need. However, as you do not have <code>root</code> access, you cannot <code>sudo apt-get install</code> other Linux tools on the instance.</p>
+
+<p>Although this is the first individual project, some parts may be challenging so please keep this in mind:</p>
+
+<ul>
+<li><strong>The real golden rule in Cloud Computing: Start early!</strong></li>
+</ul>
+
+<p>There are some guidelines for asking questions on Piazza to address:</p>
+
+<ul>
+<li>Feel free to create public posts to discuss general ideas so everyone can learn.</li>
+<li>Create a private post if you find anything unclear or broken.</li>
+<li>TAs are always willing to share ideas to improve your learning experience. However, It is <strong>NOT</strong> the duty of TAs to help you debug. When creating a post, provide all efforts you already invested to look for an answer first!</li>
+</ul>
+
+<p></div></div></p>
+
+<h4>General Details</h4>
+
+<p>The following table contains some general information about this project:</p>
+
+<p><table class="table table-striped"></p>
+
+<p><tbody></p>
+
+<p><tr>
+<th>Applicable Languages</th>
+<th></th>
+<th></th>
+</tr></p>
+
+<p><tr>
+<td>
+We recommend you use <em>Bash, Java 8, Python 2.7 or 3.5</em> so that TAs can provide high-quality assistance. Otherwise, you may use any language that your AWS instance supports. However, TAs may not be able to help you resolve problems in other languages. In addition, please create a private post on Piazza and ask for permissions.</p>
+
+<p>If you use Maven, the <em>Maven central repository</em> is the only remote repository you are allowed to use.
+</td>
+</tr></p>
+
+<p><tr>
+<th>Tasks</th>
+<th>Total Budget</th>
+</tr></p>
+
+<p><tr>
+<td>5</td>
+<td>$1</td>
+</tr></p>
+
+<p></tbody></p>
+
+<p></table></p>
+
+        
+    </div>
+</div>
+
+
+        
+
+        
+            
+    
+
+
+        
+        
+
+<div class="panel panel-default writeup_section" data-sequence="3">
+    <div class="panel-heading">
+        <a name="section_3">Dataset Overview</a> 
+        <span class="pull-right">
+                
+    
+                
+    
+        </span>
+    </div>
     <div class="panel-body writeuppanel">
+        
+        <h2>Dataset Overview</h2>
+
+<p>Wikimedia maintains hourly pageview statistics for all objects stored in Wikimedia servers as publicly accessible datasets. We will use these statistics to analyze pageview trends and derive the trending topics on Wikipedia for a particular time range.</p>
+
+<p><div class="panel panel-success"> <div class="panel-heading">Information</div> <div class="panel-body"> </p>
+
+<h4>(Optional Reading) Did you know?</h4>
+
+<p><img src="https://wikitech.wikimedia.org/w/images/9/91/Analytics_Cluster_Diagram.png" alt="Wikipedia Webrequest ingestion diagram" /></p>
+
+<h4><strong>Figure 1</strong>: <a href="https://wikitech.wikimedia.org/wiki/Analytics/Cluster">Overview of the web request ingestion process of Wikipedia</a></h4>
+
+<p>Every request made to Wikipedia is serviced by frontend <a href="https://varnish-cache.org/">varnish cache</a> servers which also log the request. The servers send all request logs to <a href="http://kafka.apache.org/">Kafka</a> brokers. Kafka brokers buffer the data which will be consumed into HDFS.</p>
+
+<p>Analysis data is then generated from the raw data with <a href="https://github.com/linkedin/camus">LinkedIn's Camus</a>, a universal data ingestion framework for ETL (extracting, transforming, and loading large volume of data).</p>
+
+<p>To serve the logs as a public resource, Wikimedia Foundation developed the Pageview API. Every request made to the API is serviced by a caching/storing proxy called <a href="https://www.mediawiki.org/wiki/RESTBase">RESTBase</a>. RESTBase's primary backend is <a href="http://cassandra.apache.org/">Apache Cassandra</a>. As a proxy, instead of performing any significant content processing itself, RESTBase requests content transformations from its backend services and caches it for future requests.</p>
+
+<p>This is just a brief summary of a sophisticated real-world architecture of cloud-based technologies and resources, and many more of these kinds of tools, technologies, and resources will be introduced throughout the course.</p>
+
+<p></div></div></p>
+
+<p>Logs are then shared publicly every hour in flat files of text. Each line of a file corresponds to calls upon one single wiki page on the Wikimedia servers.</p>
+
+<p>Each line in the pageview files has 4 space-separated fields:</p>
+
+<pre><code>domain_code page_title count_views total_response_size
+</code></pre>
+
+<p><table class="table table-striped"></p>
+
+<p><tbody></p>
+
+<p><tr>
+<th>Field name</th>
+<th>Description</th>
+</tr></p>
+
+<p><tr>
+<td><code>domain_code</code></td>
+<td>Domain name of the request (abbreviated).</td>
+</tr></p>
+
+<p><tr>
+<td><code>page_title</code></td>
+<td>Page title holds the title of the <a href="https://en.wikipedia.org/wiki/URL_normalization"><strong>unnormalized</strong></a> (we will discuss this later) section after <code>/wiki/</code> in the request URL, e.g. <code>Main_Page</code>, <code>Carnegie_Mellon_University</code>, <code>User talk:K6ka</code>.
+</td>
+</tr></p>
+
+<p><tr>
+<td><code>count_views</code></td>
+<td>The number of times this page has been viewed in the respective hour.</td>
+</tr></p>
+
+<p><tr>
+<td><code>total_response_size</code></td>
+<td>The total response size caused by the requests for this page in the respective hour. This column was defined in the former <a href="https://wikitech.wikimedia.org/wiki/Analytics/Data/Pagecounts-raw">pagecounts</a> dataset which has been deprecated and replaced by the pageview dataset. The <code>total_response_size</code> column was retained for backward compatibility but the new <a href="https://wikitech.wikimedia.org/wiki/Analytics/PageviewAPI">Pageview API</a> no longer uses it, and you will find that this column has a 0 value in most entries.
+</td>
+</tr></p>
+
+<p></tbody></p>
+
+<p></table></p>
+
+<p><code>domain_code</code> has two parts, a language identifier and the abbreviation of the <a href="https://wikitech.wikimedia.org/wiki/Analytics/Data/Pagecounts-all-sites#Contained_data">sub-project suffix</a> of the domain name.</p>
+
+<p>The subproject suffix of the domain name (domain trailing part) is coded as an abbreviation, for example, <code>.wikibooks.org</code> is coded as <code>.b</code> and <code>.mediawiki.org</code> is coded as <code>.w</code>. The only exception is that project <code>.wikipedia.org</code> is indicated by the absence of any abbreviation, for example, <code>en.wikipedia.org</code> will be coded as <code>en</code>.</p>
+
+<p>In this project we will focus on data from <strong><code>.wikipedia.org</code></strong> in English, which has the exact domain code: <strong><code>en</code></strong>.</p>
+
+<p>For example:</p>
+
+<pre><code>en Carnegie_Mellon_University 34 0
+</code></pre>
+
+<p>Means 34 requests were made to "en.wikipedia.org/wiki/Carnegie_Mellon_University", the Wikipedia <strong>desktop</strong> site for Carnegie Mellon University in English.</p>
+
+<h4>Disambiguating abbreviations ending in ".m"</h4>
+
+<p>There are two ways for an abbreviation to end in <code>.m</code>. Either because the domain is a project on <code>wikimedia.org</code> (like <code>commons.wikimedia.org</code> with abbreviation <code>commons.m</code>), or the domain is the mobile site of Wikipedia (like <code>en.m.wikipedia.org</code> with abbreviation <code>en.m</code>). A domain code in <code>&lt;language&gt;.m</code> format indicates a mobile site and a domain code in <code>&lt;project&gt;.m</code> format belongs to <code>wikimedia.org</code>, and there is no collision between these two conventions. In this project, we'll also include data from English mobile sites with the exact domain code <strong><code>en.m</code></strong>.</p>
+
+<p>To summarize, here are valid examples (from either English desktop site or mobile site):</p>
+
+<pre><code>en Carnegie_Mellon_University 34 0
+en.m Carnegie_Mellon_University_in_Qatar 1 0
+</code></pre>
+
+<p>Invalid examples:</p>
+
+<pre><code>commons.m 1848 1 0
+en.m.b A+_Certification 2 0
+en.q Donald_Trump 11 0
+de Hillary_Clinton 870 0
+</code></pre>
+
+<p>In Project 1, we will focus on analyzing the page view logs from November 2016, which consists of 720 files with each covering one hour of access logs.</p>
+
+<p>However, for P1.1 we will only use the first hour of November 9, 2016, as we are beginning our process of Wikipedia information exploration, during which certain special events occurred.</p>
+
+<p>The data to use this week has been uploaded to the following S3 location: <code>s3://cmucc-datasets/wikipediatraf/201611/pageviews-20161109-000000.gz</code>.</p>
+
+<p>You can use the <a href="https://aws.amazon.com/cli/">aws-cli</a>, <a href="http://s3tools.org/s3cmd">s3cmd</a>, <a href="https://github.com/bloomreach/s4cmd">s4cmd</a>, the <a href="http://s3browser.com/">S3 Browser</a> or your own favorite S3 client to explore the location.</p>
+
+<p>Alternatively, you can run the following command to download the file to your instance:</p>
+
+<pre><code>wget https://cmucc-datasets.s3.amazonaws.com/wikipediatraf/201611/pageviews-20161109-000000.gz
+</code></pre>
+
+<p>Refer to the section about Amazon S3 in the AWS Introduction primer for details on accessing S3.</p>
+
+<p>Do not uncompress the file. Instead, you are required to read the compressed archive directly as the input stream, e.g.</p>
+
+<pre><code>zcat pageviews-20161109-000000.gz | less
+zcat pageviews-20161109-000000.gz | ./your_executable
+</code></pre>
+
+<p><div class="panel panel-danger"> <div class="panel-heading">Danger</div> <div class="panel-body"> </p>
+
+<h4>Grading Penalties</h4>
+
+<p>The following table outlines the violations of project rules and their corresponding grade penalties for this week's project.</p>
+
+<p>The cost limits apply to Project 1.1 only.</p>
+
+<p>These rules apply for the week when Project 1.1 is active. <strong>Please note: If you want to work on Project 0 when Project 1.1 is active, the cost will be counted to Project 1.1 and you also need to tag the resources as "Project":"1.1".</strong></p>
+
+<p><table class="table table-striped">
+<tbody></p>
+
+<p><tr>
+<th>Violation</th>
+<th>Penalty of the project grade</th>
+</tr></p>
+
+<p><tr>
+<td>Incomplete submission of required files</td>
+<td>-10%</td>
+</tr></p>
+
+<p><tr>
+<td>Spending more than $1 for this project phase on AWS</td>
+<td>-10%</td>
+</tr></p>
+
+<p><tr>
+<td>Spending more than $2 for this project phase on AWS</td>
+<td>-100%</td>
+</tr></p>
+
+<p><tr>
+<td>Failing to tag <strong>all</strong> your AWS resources with the tag: key=<code>Project</code>, value=<code>1.1</code></td>
+<td>-10%</td>
+</tr></p>
+
+<p><tr>
+<td>Provisioning resources in regions other than <code>us-east-1</code></td>
+<td>-10%</td>
+</tr></p>
+
+<p><tr>
+<td>Submitting your AWS or Andrew credentials in your code for grading</td>
+<td>-100%</td>
+</tr></p>
+
+<p><tr>
+<td>Using instances other than <code>t2.micro</code></td>
+<td>-100%</td>
+</tr></p>
+
+<p><tr>
+<td>Submitting executables (<code>.jar</code>, <code>.pyc</code>, etc.) instead of human-readable code (<code>.py</code>,<code>.java</code>, <code>.sh</code>, etc.)</td>
+<td>-100%</td>
+</tr></p>
+
+<p><tr>
+<td>Attempting to hack/tamper the autograder in any way</td>
+<td>-100%</td>
+</tr></p>
+
+<p><tr>
+<td>Cheating, plagiarism or unauthorized assistance (please refer to the university policy on academic integrity and our syllabus)</td>
+<td>-200% &amp; potential dismissal</td>
+</tr></p>
+
+<p></tbody>
+</table>
+</div></div></p>
+
+<h3>Solving Projects on AWS EC2</h3>
+
+<p>Many of the projects in this course will involve creating EC2 Virtual Machines and writing specific code on them.</p>
+
+<p>Most of your work will rely on using a specific base Amazon Machine Image (or AMI) which has been pre-configured by the course staff to have all the tools necessary to complete each project.</p>
+
+<p>To begin this week's project, follow the following steps:</p>
+
+<ol>
+<li><p>Launch a <code>t2.micro</code> EC2 instance in the <code>us-east-1</code> region from <a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:">this page</a>.</p>
+
+<p>Use our student AMI named "15-319/15-619 Project Image for Students (with ENA enabled)" with the ID <code>ami-dd87aca7</code>.  It can be found under the "Community AMIs" tab on this <a href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#LaunchInstanceWizard:">page</a>.</p>
+
+<p><strong>Friendly reminder: remember to tag your instance!</strong></p></li>
+<li><p>Allow incoming traffic to ports 22 (SSH), 80 (HTTP), TCP Port 15319 and TCP Port 15619.</p></li>
+<li><p>Unlike Project 0, you can no longer use the <code>ubuntu</code> or <code>ec2-user</code> to SSH into an instance. Every week, you will have to follow these steps.</p>
+
+<ol>
+<li><p>Open the URL <code>http://&lt;your-ec2-dns&gt;:15319</code> or <code>http://&lt;your-ec2-dns&gt;:15619</code> in your web browser. Both are identical and equivalent. If you cannot access it, you likely misconfigured your incoming security groups in Step 2 above.</p></li>
+<li><p>Enter your andrew ID and submission password (from the top of this page, click the "Show Submission Password" button to view your submission password). Then Choose the <strong>Project 1.1 submitter</strong> from the dropdown list.</p></li>
+<li><p>After you click the submit button, it may take several minutes before the page automatically jumps to <code>http://&lt;your-ec2-dns&gt;:15319/logs</code> or <code>http://&lt;your-ec2-dns&gt;:15619/logs</code>, please be patient. You will see some logs indicating files are being transferred and your environment is being prepared. Do not log in to the instance until the log tells you to do so. If an error is reported, please create a private Piazza post to inform the staff.</p></li>
+<li><p>Once the installation finishes, the log will likely tell you the username and SSH private key that you can use to log in to the instance. Alternatively, it may tell you that you have not submitted or validated your AWS accounts and will not let you proceed.</p></li>
+</ol></li>
+<li><p>If Step 3 was successful, you should be able to log in to the instance using your Andrew ID and PEM/PPK file.</p></li>
+<li><p>It is a good strategy in our course to <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/Stop_Start.html">stop your instance</a> to save the budget and restart it to continue your work. Keep in mind that:</p>
+
+<ol>
+<li><p>Stopping an instance is different from terminating it. Remember to terminate all the resource before the project deadline to avoid tagging penalties.</p></li>
+<li><p>You will not get charged by EC2 hourly usage for a stopped instance, or data transfer fees, but you will still pay for the storage for EBS volumes.</p></li>
+<li><p>When you restart a stopped instance, note that the DNS name will most likely change. You need to update your commands or configuration when you use SSH or SFTP.</p></li>
+<li><p>There is no need to visit <code>http://&lt;your-new-ec2-dns&gt;:15319</code> or <code>http://&lt;your-new-ec2-dns&gt;:15619</code> in your web browser.</p></li>
+</ol></li>
+<li><p>In case you corrupt project files and need to recover them, you can revisit <code>http://&lt;your-new-ec2-dns&gt;:15319</code> or <code>http://&lt;your-new-ec2-dns&gt;:15619</code> in your web browser and click the submit button to reinitialize the project folder. Your own files will not be deleted, the previous <code>runner.sh</code> will be backed up named as <code>runner.sh.timestamp</code> and a clean <code>runner.sh</code> will be created. Other project files will be overwritten, such as <code>submitter</code>.</p></li>
+</ol>
+
+        
+    </div>
+</div>
+
+
+        
+
+        
+            
+    
+
+
+        
+        
+
+<div class="panel panel-default writeup_section" data-sequence="5">
+    <div class="panel-heading">
+        <a name="section_5">Data Pre-processing</a> 
+        <span class="pull-right">
+                
+    
+                
+    
+        </span>
+    </div>
+    <div class="panel-body writeuppanel">
+        
         <h2>Data Pre-processing</h2>
 
 <p>Pre-processing the initial data so that it is in the proper form is crucial before you can even begin analyzing it to gain any insights. <strong>Never assume that the dataset is perfectly clean and well formed.</strong> The phrase "garbage in, garbage out," points out that if your input data is malformed, you should not expect to gain insight. The phrase is also particularly applicable to data mining, machine learning or any data analysis project. Thus, the representation and quality of data must be ascertained and ensured before analyzing the data.</p>
@@ -380,10 +775,28 @@ In Python 3:
 </div>
 
 
+        
 
+        
+            
+    
+
+
+        
+        
 
 <div class="panel panel-default writeup_section" data-sequence="7">
+    <div class="panel-heading">
+        <a name="section_7">Data Analysis</a> 
+        <span class="pull-right">
+                
+    
+                
+    
+        </span>
+    </div>
     <div class="panel-body writeuppanel">
+        
         <h2>Data Analysis</h2>
 
 <p>After filtering the data, you are expected to analyze your results and answer a set of questions, which are present in the file <code>/home/&lt;andrewId&gt;/Project1_1/runner.sh</code> on your instance. To complete this module, do the following:</p>
@@ -451,7 +864,7 @@ jupyter notebook --no-browser
 <p></div></div></p>
 
 <h4>Notes</h4>
-
+
 <p>When submitting, please make sure the following source code is in your Project1_1 folder:</p>
 
 <ul>
@@ -492,3 +905,96 @@ jupyter notebook --no-browser
         
     </div>
 </div>
+
+
+        
+
+        
+            
+    
+
+
+        
+        
+
+<div class="panel panel-default writeup_section" data-sequence="9">
+    <div class="panel-heading">
+        <a name="section_9">Project Reflection Task (Mandatory, graded)</a> 
+        <span class="pull-right">
+                
+    
+                
+    
+        </span>
+    </div>
+    <div class="panel-body writeuppanel">
+        
+        <h2>Project Reflection Task (Mandatory, graded)</h2>
+
+<p>Upon completing this project you will make a post in the <a href="https://theproject.zone/cloud-forum/category/16/p11-sequential-analysis/">[P11] Sequential analysis</a> forum to reflect on your experience before the project deadline. Consider the following topics when creating your post, however, you should never share any code snippets in your reflection:</p>
+
+<ul>
+<li>Describe your approach to solving each task in this project.</li>
+<li>Explain alternative approaches that you decided not to take and why.</li>
+<li>Describe any interesting problems that you had overcome while completing this project.</li>
+</ul>
+
+<p>After completing this task, confirm that your <strong><em>Reflection Score</em></strong> has been updated on the scoreboard before the project deadline.</p>
+
+        
+    </div>
+</div>
+
+
+        
+
+        
+            
+    
+
+
+        
+        
+
+<div class="panel panel-default writeup_section" data-sequence="10">
+    <div class="panel-heading">
+        <a name="section_10">Data Visualization and Conclusion</a> 
+        <span class="pull-right">
+                
+    
+                
+    
+        </span>
+    </div>
+    <div class="panel-body writeuppanel">
+        
+        <h2>Data Visualization and Conclusion</h2>
+
+<p>Data visualization can help communicate information clearly to users. We will explore using a bar chart.</p>
+
+<p>Run the code below in Jupyter to plot and display the bar chart of the top 10 articles!</p>
+
+<pre><code>%matplotlib inline
+import pandas as pd
+from csv import QUOTE_NONE
+
+df = pd.read_table('output', header=None, index_col=0, names=['Article', 'Pageviews'],
+                  quoting=QUOTE_NONE, keep_default_na=False,
+                  encoding='utf-8')
+df.head(10).plot(kind='barh') # barh: horizontal bar
+</code></pre>
+
+<p><img src="https://s3.amazonaws.com/15619public/webcontent/p11-pandas-visualization.png" alt="Data Visualization in Jupyter" /></p>
+
+<p>Once you analyze these hourly pageviews, some interesting results will show up. Think about why these pages were so popular. Which of these trends do you think will last for the entire month of November 2016? We will find out next week.</p>
+
+<p>Please leave us feedback for this project here. This will help us strengthen this project for future offerings.</p>
+
+<p><iframe id="embeddedForm" src="https://docs.google.com/forms/d/e/1FAIpQLSd8FQMJ7yPkQYXZGet6kxTtlqGYOvoPey1m7W180QQ1QlP2og/viewform?embedded=true" width="100%" height="1024px" frameborder="0" marginheight="0" marginwidth="0">Loading Google Form...</iframe></p>
+
+        
+    </div>
+</div>
+
+
+        
